@@ -13,14 +13,15 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Image from 'next/image';
+import useScrollPosition from '../hooks/useScrollPosition';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function MainAppBar() {
+export const MainAppBar:React.FC=(props)=> {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
+  const scrollPosition = useScrollPosition();
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -37,11 +38,23 @@ function MainAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+    {...props}
+    position="fixed"
+    elevation={0}
+    sx={{
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      height: "116px", 
+      bgcolor: scrollPosition > 20 ? "secondary.main" : "transparent",
+      backdropFilter: scrollPosition > 10 ? "blur(60px)" as string : "none",
+    }}
+  >
+
       <Container maxWidth="xl">
         <Toolbar disableGutters>
             <Image
-            src={""}
+            src={"/next.svg"}
             alt='logo'
             width={100}
             height={100}
@@ -166,4 +179,3 @@ function MainAppBar() {
     </AppBar>
   );
 }
-export default MainAppBar;
